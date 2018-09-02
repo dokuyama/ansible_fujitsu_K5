@@ -10,5 +10,5 @@ SSH鍵をtaskの中で作成してそれを利用して接続します。
 ./id_rsa_ansible.pub
 ./id_rsa_ansible
 という名前でファイルが先に存在すれば、その鍵をK5に登録します。
-
+single-web-WP_vars.yml.sample を single-web-WP_vars.yml にリネームし、WordPressで使用するDBのパスワード等を指定してください。
 

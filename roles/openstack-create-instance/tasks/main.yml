@@ -17,7 +17,7 @@
     boot_volume: "{{ item }}-volume"
     security_groups: "{{ security_group }}"
     network: "{{ network_name }}"
-    auto_ip: yes
+    auto_ip: "{{ auto_ip }}"
     userdata: "{{ server_userdata | default(omit) }}"
     meta: "{{ server_meta | default(omit) }}"
     cloud: "{{ target_cloud | default(omit) }}"

@@ -1,0 +1,51 @@
+---
+# create openstack instance
+- hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+    - single-web-WP_vars.yml
+  roles:
+    - ansible-ssh-key
+    - openstack-create-basic-network
+    - openstack-security-group/get_my_global_ip
+    - { role: openstack-security-group/create, security_group_name: ["web", "mng"] }
+    - openstack-security-group/add-rule
+    - { role: openstack-create-instance, server_lists: ["single-web-WP"],  security_group: ["default", "web", "mng"], volume_size: "35", volume_image: "CentOS 7.3 64bit (English) 01", server_flavor: "P3-1", group: "webservers" }
+
+# update OS packages
+- hosts: webservers
+  gather_facts: no
+  vars_files:
+    - single-web-WP_vars.yml
+  become: yes
+
+  roles:
+    - check-ssh-port
+    - { role: yum/install, install_packages_lists: ["httpd"] }
+    - { role: yum/update-all, reboot: yes }
+
+# install wordpress
+- hosts: webservers
+  gather_facts: no
+  vars_files:
+    - single-web-WP_vars.yml
+  become: yes
+
+  roles:
+    - check-ssh-port
+    - { role: yum/install, install_packages_lists: ["php", "php-mysql", "mariadb-server", "MySQL-python"] }
+    - { role: php/change-timezone, timezone: "'Asia/Tokyo'" }
+    - { role: service/enable, service_name: ["httpd", "mariadb"] }
+    - { role: service/restart, service_name: ["httpd", "mariadb"] }
+    - wordpress/create-database
+    - wordpress/install
+    - wordpress/update
+
+- name: print message
+  hosts: webservers
+  gather_facts: no
+  tasks:
+    - debug:
+        msg: "Please open http://{{ ansible_host }}/wp/"
+

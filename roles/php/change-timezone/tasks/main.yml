@@ -1,0 +1,8 @@
+---
+- name: php change timezone
+  ini_file:
+    dest: /etc/php.ini
+    section: Date
+    option: date.timezone
+    value: "{{ timezone }}"
+

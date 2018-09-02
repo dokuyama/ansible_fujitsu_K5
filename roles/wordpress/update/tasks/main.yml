@@ -1,0 +1,7 @@
+---
+- name: Update wp
+  shell: /usr/local/bin/wp core update --path="{{ wp_path }}" && /usr/local/bin/wp plugin update --all --path="{{ wp_path }}" &&  /usr/local/bin/wp theme update --all --path="{{ wp_path }}"
+  become: yes
+  become_user: apache
+  ignore_errors: yes
+

@@ -1,0 +1,8 @@
+---
+- name: create wp database
+  mysql_db: name="{{ wp_dbname }}" state=present
+
+- name: create wp database user
+  mysql_user: name={{ wp_dbuser }} password={{ wp_dbpass }} priv={{ wp_dbname }}.*:ALL,GRANT host='localhost' state=present
+  host_all: yes
+

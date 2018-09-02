@@ -1,0 +1,6 @@
+---
+# Keypair (specify the pub/priv key file path)
+keypair_name: ansible_key
+keypair_public_key_file_path: ./id_rsa_ansible.pub
+keypair_private_key_file_path: ./id_rsa_ansible
+

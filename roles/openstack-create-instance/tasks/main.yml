@@ -1,0 +1,45 @@
+---
+- name: create a new volume
+  os_volume:
+    display_name: "{{ item }}-volume"
+    image: "{{ volume_image }}"
+    size: "{{ volume_size }}"
+    cloud: "{{ target_cloud | default(omit) }}"
+    state: present
+  with_items: 
+    - "{{ server_lists }}"
+
+- name: create instance and boot from the volume
+  os_server:
+    name: "{{ item }}"
+    flavor: "{{ server_flavor }}"
+    key_name: "{{ keypair_name }}"
+    boot_volume: "{{ item }}-volume"
+    security_groups: "{{ security_group }}"
+    network: "{{ network_name }}"
+    auto_ip: yes
+    userdata: "{{ server_userdata | default(omit) }}"
+    meta: "{{ server_meta | default(omit) }}"
+    cloud: "{{ target_cloud | default(omit) }}"
+    state: present
+  with_items:
+    - "{{ server_lists }}"
+
+- name: retrieve facts about the instance
+  os_server_facts:
+    server: "{{ item }}"
+    cloud: "{{ target_cloud | default(omit) }}"
+  register: nova_server
+  with_items:
+    - "{{ server_lists }}"
+
+- name: add server to inventory
+  add_host:
+    name: "{{ item.ansible_facts.openstack_servers[0].name }}"
+    groups: "{{ group }}"
+    ansible_host: "{{ item.ansible_facts.openstack_servers[0].accessIPv4 }}"
+    ansible_user: k5user
+    ansible_ssh_private_key_file: "{{ keypair_private_key_file_path }}"
+    ansible_ssh_extra_args: "-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+  with_items: "{{ nova_server.results }}"
+

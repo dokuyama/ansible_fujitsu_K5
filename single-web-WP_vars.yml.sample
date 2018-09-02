@@ -1,0 +1,40 @@
+---
+##
+## openstack-create-basic-network vars
+## 
+
+# Target cloud name
+target_cloud: jp-east-3
+# Network
+network_name: demo-network
+subnet_name: demo-subnet
+subnet_cidr: 192.168.100.0/24
+dns_servers: [ 8.8.8.8 ]
+router_attached_network: fip-net
+router_name: demo-router
+
+##
+## openstack-security-group/add-rule vars
+##
+security_group_rules:
+  - { name: "http", security_group: "web", protocol: "tcp", port_range_min: "80", port_range_max: "80", remote_ip_prefix: "0.0.0.0/0" }
+  - { name: "https", security_group: "web", protocol: "tcp", port_range_min: "443", port_range_max: "443", remote_ip_prefix: "0.0.0.0/0" }
+  - { name: "ssh", security_group: "mng", protocol: "tcp", port_range_min: "22", port_range_max: "22", remote_ip_prefix: "{{ ipify_public_ip }}/32" }
+
+# Proxy environment vars (if required)
+#proxy_env:
+#  http_proxy:
+#  https_proxy:
+#  no_proxy:
+
+# WP settings
+wp_path: /var/www/html/wp
+wp_dbname: wp
+wp_dbuser: wp
+wp_dbpass: sample_password
+wp_url_path: /wp
+wp_title: K5 Test
+wp_admin_user: wpadmin
+wp_admin_pass: sample_password
+wp_admin_email: admin@example.jp
+

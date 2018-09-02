@@ -1,0 +1,26 @@
+clouds:
+ jp-west-3:
+  auth:
+   auth_url: https://identity.jp-west-3.cloud.global.fujitsu.com/v3
+   username: XXXXXXXXXX
+   password: XXXXXXXXXX
+   project_domain_name: XXXXXXXXXX
+   user_domain_name: XXXXXXXXXX
+   project_name: XXXXXXXXXX-prj
+   project_id: XXXXXXXXXX
+  identity_api_version: '3'
+  region_name: jp-west-3
+
+ 
+ jp-east-3:
+  auth:
+   auth_url: https://identity.jp-east-3.cloud.global.fujitsu.com/v3
+   username: XXXXXXXXXX
+   password: XXXXXXXXXX
+   project_domain_name: XXXXXXXXXX
+   user_domain_name: XXXXXXXXXX
+   project_name: XXXXXXXXXX-prj
+   project_id: XXXXXXXXXX
+  identity_api_version: '3'
+  region_name: jp-east-3
+

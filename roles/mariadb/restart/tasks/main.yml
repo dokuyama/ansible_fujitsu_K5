@@ -1,0 +1,4 @@
+---
+- name: run mariadb-server
+  service: name=mariadb state=restarted enabled=yes
+

@@ -1,8 +1,7 @@
 ---
 - name: yum install
   yum:  
-    name: "{{ item }}"
+    name: "{{ rpms }}"
     state: latest
-  with_items: 
-    - "{{ install_packages_lists }}"
+    enablerepo: "{{ enablerepo |default(omit) }}"
 

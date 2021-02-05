@@ -33,7 +33,9 @@
 
   roles:
     - check-ssh-port
-    - { role: yum/install, install_packages_lists: ["httpd", "php", "php-mysql", "mariadb-server", "MySQL-python"] }
+    # WP needs New PHP
+    - { role: yum/install, rpms: "https://rpms.remirepo.net/enterprise/remi-release-7.rpm" }
+    - { role: yum/install, rpms: [ httpd, php, php-mysql, mariadb-server, MySQL-python ] , enablerepo: "remi-php74" }
     - { role: php/change-timezone, timezone: "'Asia/Tokyo'" }
     - { role: service/enable, service_name: ["httpd", "mariadb"] }
     - { role: service/restart, service_name: ["httpd", "mariadb"] }
